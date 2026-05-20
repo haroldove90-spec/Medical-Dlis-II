@@ -15,9 +15,10 @@ interface ConsentFormProps {
   onClose: () => void;
   onSave: (consent: InformedConsent) => void;
   initialData?: InformedConsent;
+  patients?: Patient[];
 }
 
-export default function ConsentForm({ patient, onClose, onSave, initialData }: ConsentFormProps) {
+export default function ConsentForm({ patient, onClose, onSave, initialData, patients }: ConsentFormProps) {
   const [formData, setFormData] = useState<InformedConsent>(initialData || {
     id: '',
     patientId: patient.id,
@@ -471,7 +472,39 @@ export default function ConsentForm({ patient, onClose, onSave, initialData }: C
                   <User className="w-5 h-5" />
                   <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">I. Datos del Paciente</h3>
                </div>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {patients && patients.length > 0 && (
+                     <div className="space-y-1 col-span-1 md:col-span-2 lg:col-span-1">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Seleccionar Paciente</label>
+                        <select
+                           value={formData.patientId || ''}
+                           onChange={e => {
+                              const selectedId = e.target.value;
+                              const found = patients.find(p => p.id === selectedId);
+                              if (found) {
+                                 setFormData(prev => ({
+                                    ...prev,
+                                    patientId: found.id,
+                                    patientData: {
+                                       ...prev.patientData,
+                                       fullName: found.name,
+                                       phone: found.phone || '',
+                                       email: found.email || '',
+                                       age: found.age || 28,
+                                       sex: found.gender === 'Femenino' ? 'F' : 'M'
+                                    }
+                                 }));
+                              }
+                           }}
+                           className="form-input-hc"
+                        >
+                           <option value="" disabled>-- Seleccione un paciente --</option>
+                           {patients.map(p => (
+                              <option key={p.id} value={p.id}>{p.name}</option>
+                           ))}
+                        </select>
+                     </div>
+                  )}
                   <div className="space-y-1">
                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Nombre Completo</label>
                      <input type="text" value={formData.patientData.fullName} onChange={e => setFormData({...formData, patientData: {...formData.patientData, fullName: e.target.value}})} className="form-input-hc" />

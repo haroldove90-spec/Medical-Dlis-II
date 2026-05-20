@@ -19,6 +19,7 @@ import ConsentClosureForm from './ConsentClosureForm';
 import PhysicalExplorationForm from './PhysicalExplorationForm';
 import LaserConsentForm from './LaserConsentForm';
 import TreatmentPlanForm from './TreatmentPlanForm';
+import DigitalRecipeForm from './DigitalRecipeForm';
 
 const CONSENT_STORAGE_KEY = 'medical_dlis_informed_consents';
 const CLOSURE_STORAGE_KEY = 'medical_dlis_consent_closures';
@@ -479,13 +480,15 @@ export default function Dashboard({ activeRole, activeSection, onSectionChange }
 
       <AnimatePresence>
         {selectedLaserConsent && (
-          <div className="fixed inset-0 z-[300]">
-             <LaserConsentForm 
-               patient={patients.find(p => p.id === selectedLaserConsent.patientId) || INITIAL_PATIENTS[0]} 
-               onClose={() => setSelectedLaserConsent(null)} 
-               onSave={handleSaveLaserConsent}
-               initialData={selectedLaserConsent}
-             />
+          <div className="fixed inset-0 z-[300] bg-slate-950/60 backdrop-blur-sm overflow-y-auto p-4 md:p-10 flex items-start justify-center">
+            <div className="w-full max-w-4xl my-auto">
+              <LaserConsentForm 
+                patient={patients.find(p => p.id === selectedLaserConsent.patientId) || INITIAL_PATIENTS[0]} 
+                onClose={() => setSelectedLaserConsent(null)} 
+                onSave={handleSaveLaserConsent}
+                initialData={selectedLaserConsent}
+              />
+            </div>
           </div>
         )}
       </AnimatePresence>
@@ -552,13 +555,16 @@ export default function Dashboard({ activeRole, activeSection, onSectionChange }
 
       <AnimatePresence>
         {selectedConsent && (
-          <div className="fixed inset-0 z-[300]">
-             <ConsentForm 
-               patient={patients.find(p => p.id === selectedConsent.patientId) || INITIAL_PATIENTS[0]} 
-               onClose={() => setSelectedConsent(null)} 
-               onSave={handleSaveConsent}
-               initialData={selectedConsent}
-             />
+          <div className="fixed inset-0 z-[300] bg-slate-950/60 backdrop-blur-sm overflow-y-auto p-4 md:p-10 flex items-start justify-center">
+            <div className="w-full max-w-4xl my-auto">
+              <ConsentForm 
+                patient={patients.find(p => p.id === selectedConsent.patientId) || INITIAL_PATIENTS[0]} 
+                onClose={() => setSelectedConsent(null)} 
+                onSave={handleSaveConsent}
+                initialData={selectedConsent}
+                patients={patients}
+              />
+            </div>
           </div>
         )}
       </AnimatePresence>
@@ -1722,6 +1728,7 @@ export default function Dashboard({ activeRole, activeSection, onSectionChange }
                   patient={selectedPatient || patients[0] || INITIAL_PATIENTS[0]}
                   onClose={handleClinicalViewClose}
                   onSave={handleSaveConsent}
+                  patients={patients}
                 />
               ) : activeSection === 'laser_consent' ? (
                 <LaserConsentForm 
@@ -1737,14 +1744,10 @@ export default function Dashboard({ activeRole, activeSection, onSectionChange }
                   patients={patients}
                 />
               ) : activeSection === 'recipe' ? (
-                <ClinicalRecord 
-                  patient={selectedPatient || patients[0] || INITIAL_PATIENTS[0]} 
+                <DigitalRecipeForm 
+                  patient={selectedPatient || patients[0] || INITIAL_PATIENTS[0]}
                   onClose={handleClinicalViewClose}
-                  activeRole={activeRole}
-                  activeSection={activeSection}
-                  initialView={clinicalRecordView}
                   patients={patients}
-                  onPatientChange={(p) => setSelectedPatient(p)}
                 />
               ) : (
                 <PodiatryChecklistForm 
@@ -1816,30 +1819,37 @@ export default function Dashboard({ activeRole, activeSection, onSectionChange }
 
       <AnimatePresence>
         {selectedPatientForConsent && (
-          <div className="fixed inset-0 z-[300]">
-            <ConsentForm 
-              patient={selectedPatientForConsent} 
-              onClose={() => setSelectedPatientForConsent(null)} 
-              onSave={handleSaveConsent}
-            />
+          <div className="fixed inset-0 z-[300] bg-slate-950/60 backdrop-blur-sm overflow-y-auto p-4 md:p-10 flex items-start justify-center">
+            <div className="w-full max-w-4xl my-auto">
+              <ConsentForm 
+                patient={selectedPatientForConsent} 
+                onClose={() => setSelectedPatientForConsent(null)} 
+                onSave={handleSaveConsent}
+                patients={patients}
+              />
+            </div>
           </div>
         )}
         {selectedPatientForLaserConsent && (
-          <div className="fixed inset-0 z-[300]">
-            <LaserConsentForm 
-              patient={selectedPatientForLaserConsent} 
-              onClose={() => setSelectedPatientForLaserConsent(null)} 
-              onSave={handleSaveLaserConsent}
-            />
+          <div className="fixed inset-0 z-[300] bg-slate-950/60 backdrop-blur-sm overflow-y-auto p-4 md:p-10 flex items-start justify-center">
+            <div className="w-full max-w-4xl my-auto">
+              <LaserConsentForm 
+                patient={selectedPatientForLaserConsent} 
+                onClose={() => setSelectedPatientForLaserConsent(null)} 
+                onSave={handleSaveLaserConsent}
+              />
+            </div>
           </div>
         )}
         {selectedPatientForClosure && (
-          <div className="fixed inset-0 z-[300]">
-            <ConsentClosureForm 
-              patient={selectedPatientForClosure} 
-              onClose={() => setSelectedPatientForClosure(null)} 
-              onSave={handleSaveClosure}
-            />
+          <div className="fixed inset-0 z-[300] bg-slate-950/60 backdrop-blur-sm overflow-y-auto p-4 md:p-10 flex items-start justify-center">
+            <div className="w-full max-w-4xl my-auto">
+              <ConsentClosureForm 
+                patient={selectedPatientForClosure} 
+                onClose={() => setSelectedPatientForClosure(null)} 
+                onSave={handleSaveClosure}
+              />
+            </div>
           </div>
         )}
         {selectedPatientForExploration && (
