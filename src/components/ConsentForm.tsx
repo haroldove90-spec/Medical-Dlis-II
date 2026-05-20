@@ -388,27 +388,30 @@ export default function ConsentForm({ patient, onClose, onSave, initialData }: C
 
   return (
     <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="fixed inset-0 z-[200] bg-white flex flex-col h-full overflow-hidden"
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-slate-50/50 rounded-[2.5rem] border border-slate-100 p-6 md:p-10 shadow-xl space-y-10 relative overflow-hidden"
     >
-      {/* Header */}
-      <div className="px-4 md:px-8 py-4 md:py-6 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white/80 backdrop-blur-md shrink-0 z-30 gap-4">
-        <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
+      {/* Decorative top strip */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brand-purple to-purple-400"></div>
+
+      {/* Header Controls */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+        <div className="flex items-center gap-4">
           <button 
+            type="button"
             onClick={onClose}
-            className="p-2 md:p-3 hover:bg-slate-50 rounded-2xl text-slate-400 hover:text-brand-purple transition-all border border-transparent hover:border-slate-100 shrink-0"
+            className="p-3 bg-white border border-slate-200 rounded-2xl text-slate-400 hover:text-slate-900 transition-all shadow-sm"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <div className="min-w-0">
-            <h2 className="text-lg md:text-xl font-display font-black text-slate-900 tracking-tight leading-none italic truncate">
-              Consentimiento Informado
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 bg-brand-purple/10 text-brand-purple rounded-lg text-xs font-black uppercase tracking-wider">CONSENTIMIENTO INFORMADO</span>
+            </div>
+            <h2 className="text-2xl font-display font-black text-slate-900 leading-none mt-2">
+              {formData.type || 'General'}
             </h2>
-            <p className="text-[11px] md:text-[12px] text-slate-400 font-black uppercase tracking-[0.15em] mt-1.5 flex items-center gap-2 truncate">
-               <span className="w-1.5 h-1.5 rounded-full bg-brand-purple shrink-0"></span>
-               {formData.type || 'General'}
-            </p>
           </div>
         </div>
         
@@ -416,7 +419,7 @@ export default function ConsentForm({ patient, onClose, onSave, initialData }: C
            {initialData && (
               <button 
                 onClick={() => generatePDF(formData)}
-                className="flex-1 sm:flex-none bg-slate-900 text-white px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2"
+                className="px-6 py-4 bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-sm flex items-center justify-center gap-2"
               >
                 <FileDown className="w-4 h-4" />
                 Exportar PDF
@@ -425,7 +428,7 @@ export default function ConsentForm({ patient, onClose, onSave, initialData }: C
            <button 
                 onClick={handleSave}
                 disabled={isSaving}
-                className={`flex-1 sm:flex-none ${isSaving ? 'bg-emerald-500' : 'bg-brand-purple hover:bg-brand-purple-dark'} text-white px-4 md:px-8 py-2.5 md:py-3 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-xl shadow-brand-purple/20`}
+                className="px-6 py-4 bg-brand-purple text-white hover:bg-brand-purple/90 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-brand-purple/20 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isSaving ? <CheckCircle2 className="w-4 h-4 animate-bounce" /> : <Save className="w-4 h-4" />}
                 <span>{isSaving ? 'Guardando...' : 'Firmar y Guardar'}</span>
@@ -433,10 +436,9 @@ export default function ConsentForm({ patient, onClose, onSave, initialData }: C
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-0 md:p-8 bg-slate-50/50">
-        <div className="max-w-4xl mx-auto space-y-8 pb-32">
-          {/* Logo & Info */}
-          <div className="bg-white p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-slate-100 shadow-sm space-y-8">
+      <div className="max-w-4xl mx-auto space-y-8 pb-32">
+        {/* Logo & Info */}
+        <div className="bg-white p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-slate-100 shadow-sm space-y-8">
             <div className="flex flex-col items-center text-center space-y-4">
                <div className="w-20 h-20 bg-brand-purple/10 rounded-full flex items-center justify-center">
                   <ShieldCheck className="w-10 h-10 text-brand-purple" />
@@ -872,7 +874,6 @@ export default function ConsentForm({ patient, onClose, onSave, initialData }: C
             )}
           </div>
         </div>
-      </div>
 
       <style>{`
         .form-input-hc {
