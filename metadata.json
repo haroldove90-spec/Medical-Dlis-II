@@ -1,0 +1,6 @@
+{
+  "name": "Remix: Medical D\u0027Lis",
+  "description": "Prototipo funcional de dashboard para clínica médica y estética, con gestión de citas y pacientes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
